@@ -9,7 +9,9 @@ import Layout from '../components/Layout'
 import Table from '../components/Table'
 
 const Home: NextPage = () => {
+  const [client, setClient] = useState(Client.empty())
   const [visible, setVisible] = useState<'table' | 'form'>('table')
+
   const clients = [
     new Client('1', 'Bianca', 28),
     new Client('2', 'Igor', 22),
@@ -18,11 +20,17 @@ const Home: NextPage = () => {
   ]
 
   const selectedClient = (client: Client) => {
-    console.log('sseasd', client)
+    setClient(client)
+    setVisible('form')
   }
 
   const deletedClient = (client: Client) => {
     console.log('sseasd', client.name)
+  }
+
+  const newClient = () => {
+    setClient(Client.empty())
+    setVisible('form')
   }
 
   const onSaveClient = (client: Client) => {
@@ -42,11 +50,7 @@ const Home: NextPage = () => {
         {visible === 'table' ? (
           <>
             <div className={`flex justify-end`}>
-              <Button
-                onClick={() => setVisible('form')}
-                color="green"
-                className="mb-4"
-              >
+              <Button onClick={newClient} color="green" className="mb-4">
                 Novo Cliente
               </Button>
             </div>
@@ -58,7 +62,7 @@ const Home: NextPage = () => {
           </>
         ) : (
           <Form
-            client={clients[0]}
+            client={client}
             onChange={onSaveClient}
             handleCancel={() => setVisible('table')}
           />
