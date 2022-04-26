@@ -7,9 +7,11 @@ import Input from '../Input'
 
 type FormProps = {
   client: Client
+  onChange?: (client: Client) => void
+  handleCancel?: () => void
 }
 
-const Form = ({ client }: FormProps) => {
+const Form = ({ client, handleCancel, onChange }: FormProps) => {
   const [name, setName] = useState(client?.name ?? '')
   const [age, setAge] = useState(client?.age ?? 0)
 
@@ -21,10 +23,14 @@ const Form = ({ client }: FormProps) => {
       <Input text="Nome" value={name} onChange={setName} className={`mb-5`} />
       <Input text="Idade" type="number" value={age} onChange={setAge} />
       <div className={`flex justify-end mt-7`}>
-        <Button color="blue" className="mr-2">
+        <Button
+          color="blue"
+          className="mr-2"
+          onClick={() => onChange?.(new Client(client?.id, name, Number(age)))}
+        >
           {client?.id ? 'Alterar' : 'Salvar'}
         </Button>
-        <Button>Cancelar</Button>
+        <Button onClick={handleCancel}>Cancelar</Button>
       </div>
     </div>
   )

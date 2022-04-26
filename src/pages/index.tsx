@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { NextPage } from 'next'
 
 import Client from '../core/Client'
@@ -8,6 +9,7 @@ import Layout from '../components/Layout'
 import Table from '../components/Table'
 
 const Home: NextPage = () => {
+  const [visible, setVisible] = useState<'table' | 'form'>('table')
   const clients = [
     new Client('1', 'Bianca', 28),
     new Client('2', 'Igor', 22),
@@ -23,6 +25,11 @@ const Home: NextPage = () => {
     console.log('sseasd', client.name)
   }
 
+  const onSaveClient = (client: Client) => {
+    console.log(client)
+    setVisible('table')
+  }
+
   return (
     <div
       className={`
@@ -32,17 +39,30 @@ const Home: NextPage = () => {
     `}
     >
       <Layout title="Cadastro Simples">
-        <div className={`flex justify-end`}>
-          <Button color="green" className="mb-4">
-            Novo Cliente
-          </Button>
-        </div>
-        <Table
-          clients={clients}
-          selectedClient={selectedClient}
-          deletedClient={deletedClient}
-        />
-        <Form client={clients[0]} />
+        {visible === 'table' ? (
+          <>
+            <div className={`flex justify-end`}>
+              <Button
+                onClick={() => setVisible('form')}
+                color="green"
+                className="mb-4"
+              >
+                Novo Cliente
+              </Button>
+            </div>
+            <Table
+              clients={clients}
+              selectedClient={selectedClient}
+              deletedClient={deletedClient}
+            />
+          </>
+        ) : (
+          <Form
+            client={clients[0]}
+            onChange={onSaveClient}
+            handleCancel={() => setVisible('table')}
+          />
+        )}
       </Layout>
     </div>
   )
