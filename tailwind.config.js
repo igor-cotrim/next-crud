@@ -4,7 +4,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx}',
     './src/utils/**/*.{js,ts,jsx,tsx}'
   ],
-  safelist: [/^bg-/, /^to-/, /^from-/],
+  safelist: [{ pattern: /(bg|to|from)-(green|blue|gray)-(400|700)/ }],
   theme: {
     extend: {}
   },
